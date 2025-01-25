@@ -6,7 +6,7 @@ export const Poll = () => {
   const pollOptions = getPollOptions();
   return (
     <div>
-    {pollOptions.map(option => <PollOption option={option}/>)}
-        </div>
+      {pollOptions.map(option => <PollOption option={option}/>)}
+    </div>
   )
 }

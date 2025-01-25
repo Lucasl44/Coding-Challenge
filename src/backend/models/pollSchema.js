@@ -1,18 +1,16 @@
-import mongoose from 'mongoose';
+import { Sequelize, DataTypes } from 'sequelize';
+import mysql2 from 'mysql2';
+import createPoll from './poll.js';
+import createVotes from './votes.js';
 
-const voteSchema = new mongoose.Schema({
-  voterId: {type: String, required: true},
-  timestamp: {type: Date, default: Date.now}
-});
+const sequelize = new Sequelize('mysql://root:T1nkerbe1144-@localhost:3306/pollapp', {
+  dialectModule: mysql2
+  });
 
-const optionSchema = new mongoose.Schema({
-  text: {type: String, required: true},
-  votes: [voteSchema]
-});
+const Poll = createPoll(sequelize, DataTypes);
+const Votes = createVotes(sequelize, DataTypes);
 
-const pollSchema = new mongoose.Schema({
-  question: {type: String, required: true},
-  options: [optionSchema]
-});
+Poll.hasMany(Votes);
+Votes.belongsTo(Poll);
 
-export const Poll = mongoose.model('Poll', pollSchema);
+export {sequelize, Poll, Votes};
