@@ -7,6 +7,7 @@ const app = express();
 const port = 9876;
 
 app.use(express.static(path.join('dist', 'frontend')))
+app.use(express.json());
 app.use('/api/polls', router);
 
 sequelize.sync().then(() => {
