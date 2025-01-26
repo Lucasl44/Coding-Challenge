@@ -5,7 +5,7 @@ import router from './routes/pollRoutes';
 import { sequelize } from './models/pollSchema';
 
 const app = express();
-const port = 9875;
+const port = 9876;
 
 app.use(express.static(path.join('dist', 'frontend')))
 app.use(cors());

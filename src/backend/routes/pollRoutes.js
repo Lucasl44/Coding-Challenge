@@ -29,7 +29,7 @@ router.get('/:pollId', async (req, res) => {
   try {
     const { pollId } = req.params;
     const poll = await Poll.findByPk(pollId, {
-      include: [Votes]
+      include: [{model: Votes, as: 'votes'}]
     });
 
     if (!poll) {
@@ -46,13 +46,13 @@ router.get('/:pollId', async (req, res) => {
 router.get('/active/poll', async (req, res) => {
   try {
     const activePoll = await Poll.findOne({
-      order: [['createdAt', 'DESC']]
-    }, {include: [Votes]});
-
+      order: [['createdAt', 'DESC']],
+      include: [{model: Votes, as: 'votes'}]
+    });
     if (!activePoll) {
       return res.status(404).json({message: 'No polls found'});
     }
-
+    
     res.status(200).json(activePoll)
   } catch (err) {
     res.status(500).json({message: 'Error fetching the active poll', err});
@@ -63,13 +63,15 @@ router.get('/active/poll', async (req, res) => {
 router.get('/:pollId/votes', async (req, res) => {
   try {
     const { pollId } = req.params;
-    const poll = await Poll.findByPk(pollId, { include: [Votes] });
+    const poll = await Poll.findByPk(pollId, {
+      include: [{model: Votes, as: 'votes'}]
+    });
     
     if (!poll) {
       return res.status(404).json({message: 'Poll not found'});
     }
     
-    res.status(200).json(poll.Votes);
+    res.status(200).json(poll.votes);
   } catch (err) {
     res.status(500).json({ message: 'Error fetching votes', err });
   }
@@ -83,7 +85,7 @@ router.post('/:pollId/vote', async (req, res) => {
     const poll = await Poll.findByPk(pollId);
 
     if (!poll || !poll.options.includes(option)) {
-      return res.status(400).json({ message: 'Invalid poll or option', poll });
+      return res.status(400).json({ message: 'Invalid poll or option', options: poll.options, option });
     }
     
     const vote = await Votes.create({ pollId, option });

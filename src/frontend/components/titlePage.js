@@ -1,16 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
-
-export const TitlePage = () => {
-  const [poll, setPoll] = useState({});
-  useEffect(() => {
-    fetch('api/polls/active/poll')
-      .then((response) => response.json())
-      .then((data) => setPoll(data))
-      .catch((err) => console.error('Error fetching poll:', err))
-  }, []);
+const style = {
+  fontSize: '30px',
+  marginBottom: '10px',
+  color: 'white'
+}
+export const TitlePage = ({question, voted}) => {
   return (
-    <div>
-      {poll.question}
+    <div style={style}>
+    {!voted ? question : "Thank you for voting"}
     </div>
   )
 };
