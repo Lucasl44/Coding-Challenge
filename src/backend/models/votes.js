@@ -1,5 +1,5 @@
 export default function createVotes(sequelize, DataTypes) {
-  return sequelize.define('Vote', {
+  return sequelize.define('Votes', {
     option: {
       type: DataTypes.STRING,
       allowNull: false

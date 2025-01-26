@@ -10,7 +10,7 @@ const sequelize = new Sequelize('mysql://root:T1nkerbe1144-@localhost:3306/polla
 const Poll = createPoll(sequelize, DataTypes);
 const Votes = createVotes(sequelize, DataTypes);
 
-Poll.hasMany(Votes);
+Poll.hasMany(Votes, {foreignKey: pollId});
 Votes.belongsTo(Poll);
 
 export {sequelize, Poll, Votes};
