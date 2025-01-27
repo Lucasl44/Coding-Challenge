@@ -1,8 +1,8 @@
 import express from 'express';
 import path from 'path';
 import cors from 'cors';
-import router from './routes/pollRoutes';
-import { sequelize } from './models/pollSchema';
+import router from './routes/pollRoutes.js';
+import { sequelize } from './models/pollSchema.js';
 
 const app = express();
 const port = 9876;

@@ -8,7 +8,7 @@ Create a .env file in the root of the application and add 2 entries for the mysq
     MYSQL_USER="mysql user"
     MYSQL_PASSWORD="mysql password"
     
-execute <npm run build:rel> to build the relase version.
+execute <npm run build:prod> to build the prodution version.
 once this has completed execute <npm run server>
 
 This will allow you to navigate to localhost:9876 to see the running application
@@ -49,5 +49,5 @@ The body for the request should look like this:
 
 //Discuss issues faced with mongodb 
 //Discuss how to test parts of the application 
-
+//make sure ive handled no poll
 

@@ -1,22 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-
-const style = {
-  marginTop: '20px',
-  padding: '10px 20px',
-  fontSize: '16px',
-  background: '#007bff',
-  color: 'white',
-  border: 'none',
-  borderRadius: '8px',
-  cursor: 'pointer'
-};
+import { SubmitButtonStyled } from './styledComponents/submitButtonStyled.js';
 
 export const SubmitButton = ({handleVote}) => {
   return (
-    <button
-      onClick={handleVote}
-      style={style}>
+    <SubmitButtonStyled onClick={handleVote}>
       Submit
-    </button>
+    </SubmitButtonStyled>
   )
 }
