@@ -42,12 +42,49 @@ The body for the request should look like this:
 "option": "the option you want to vote for"
 }
 
-//show how to return all votes for this poll,
-//show how to return all polls
-//show how to return a specific poll
-//show how to get all votes for a poll
+Other Endpoints
+Return all votes for specific poll
+    endpoint: http://localhost:9876/api/polls/:pollID/votes
+    request: GET
 
-//Discuss issues faced with mongodb 
-//Discuss how to test parts of the application 
-//make sure ive handled no poll
+Return all polls
+    endpoint: http://localhost:9876/api/polls
+    request: GET
+    
+Return a specific poll
+    endpoint: http://localhost:9876/api/polls/:pollId
+
+
+Once this has been set up, you should be able to vote on a poll by selecting an option and clicking submit. This will
+update the database with the new vote and will display the % of votes for each poll option. 
+The submit button will now disappear as you have already voted and will require a refresh to reappear.
+
+
+
+Issues faced
+The first issue I faced was with using mongoDb, when downloading mongoose there was some critical dependancy vunerabilities
+after spending an hour trying to find a work around, I opted to switch to mysql and sequelize which didnt have any
+vunerabilities. This also proved easy to use so i stuck with it going forward.
+
+After that during development most of the issues i experienced were small and easy to fix and mostly developer error.
+For example i had an issue with the vote being recorded on submit was the previous vote but this was because i had 
+forgotten to setVoted and clear the selectedOption in a .then so it wasnt waiting for the post request for a new vote
+to finish.
+
+The main issue i actually experienced, which is the reason i delayed my handin by a day, was with running the tests.
+I could not configure jest and babel correctly with import/export syntax. I spent hours buried in babel, jest and webpack
+docs, however i could not figure out how to get babel to read updated javascript syntax. I have unfortunately not been able
+to get this working, so i opted to write an example of how i would write a test for pollOptions.js. I choose this 
+file as it had the most moving parts and rendered a few other components below this. I didnt want to just leave no 
+test files because i couldnt get them running properly. 
+
+I think this was mostly difficult as it was the first time ive used jest and set up a test suite from scratch since my
+original course 3 years ago. I'm hoping by demonstating how i would test a component this will allow you to get an idea
+of how i would construct tests. Ive reread it several times and made sure i cannot see any errors, however as I have not
+been able to run it there may be some syntax mistakes or some issues with jest that I am unaware of.
+
+
+
+
+
 
