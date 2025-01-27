@@ -1,12 +1,20 @@
-const express = require('express');
-const path = require('path');
+import express from 'express';
+import path from 'path';
+import cors from 'cors';
+import router from './routes/pollRoutes';
+import { sequelize } from './models/pollSchema';
 
 const app = express();
 const port = 9876;
 
 app.use(express.static(path.join('dist', 'frontend')))
-app.use('/path', (req, res) => {
-  res.send('This shows on the path');
+app.use(cors());
+
+app.use(express.json());
+app.use('/api/polls', router);
+
+sequelize.sync().then(() => {
+  console.log('DataBase connected');
 });
 
 app.listen(port, () => {
