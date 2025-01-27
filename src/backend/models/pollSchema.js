@@ -2,8 +2,9 @@ import { Sequelize, DataTypes } from 'sequelize';
 import mysql2 from 'mysql2';
 import createPoll from './poll.js';
 import createVotes from './votes.js';
+import 'dotenv/config';
 
-const sequelize = new Sequelize('mysql://root:T1nkerbe1144-@localhost:3306/pollapp', {
+const sequelize = new Sequelize(`mysql://${process.env.MYSQL_USER}:${process.env.MYSQL_PASSWORD}@localhost:3306/pollapp`, {
   dialectModule: mysql2
   });
 
