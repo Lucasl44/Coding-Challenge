@@ -1,15 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { PollOptions } from './pollOptions.js';
 import { TitlePage } from './titlePage.js';
-
-const style = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  textAlign: 'center',
-  width: '100%'
-}
+import { ErrorStyled } from './styledComponents/errorStyled.js';
+import { PollComponentStyled } from './styledComponents/pollComponentStyled.js';
 
 export const PollComponent = () => {
   const [poll, setPoll] = useState();
@@ -25,16 +18,16 @@ export const PollComponent = () => {
       .catch((err) => console.error('Error fetching poll:', err))
   }, [voted]);
   if (isLoading) {
-    return <p>Loading active poll</p>
+    return <ErrorStyled>Loading active poll</ErrorStyled>
   }
 
-  if (!poll) {
-    return <p>No active poll available</p>
+  if (!poll.question) {
+    return <ErrorStyled>No active poll available</ErrorStyled>
   }
   return (
-    <div style={style}>
+    <PollComponentStyled>
       <TitlePage question={poll.question} voted={voted}/>
       <PollOptions poll={poll} setVoted={setVoted} voted={voted}/>
-    </div>
+    </PollComponentStyled>
   )
 }

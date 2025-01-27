@@ -1,21 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { SubmitButton } from './submitButton.js';
 import { PollOption } from './pollOption.js';
-
-const style = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  textAlign: 'center',
-  width: '100%'
-}
+import { PollOptionsStyled } from './styledComponents/pollOptionsStyled.js';
 
 export const PollOptions = ({poll, setVoted, voted}) => {
   const [selectedOption, setSelectedOption] = useState('');
   const {options, id, votes} = poll;
   const handleVote = () => {
-    try {
+    if (!selectedOption) return;
     fetch(`/api/polls/${id}/vote`, {
       method: 'POST',
       headers: {
@@ -28,10 +20,7 @@ export const PollOptions = ({poll, setVoted, voted}) => {
     }).then(() => {
       setVoted(true);
       setSelectedOption('')
-    });
-    } catch (err) {
-      console.error('Failed to submit vote', err);
-    }
+    }).catch(err => console.error('Failed to submit vote', err));
   }
   const totalVotes = votes.length;
   const optionPercentages = options.map((option) => {
@@ -41,11 +30,11 @@ export const PollOptions = ({poll, setVoted, voted}) => {
   });
   
   return (
-    <div style={style}>
+    <PollOptionsStyled>
       {optionPercentages.map(({option, percentage}, index) => 
         <PollOption key={index} option={option} percentage={percentage} setSelectedOption={setSelectedOption} selectedOption={selectedOption} voted={voted}/>
       )}
       {!voted && <SubmitButton handleVote={handleVote}/>}
-    </div>
+    </PollOptionsStyled>
   )
 }

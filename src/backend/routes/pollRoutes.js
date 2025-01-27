@@ -1,98 +1,29 @@
 const express = require('express');
 import { Poll, Votes } from '../models/pollSchema.js';
-
+import { createPoll } from './handlers/createPoll.js';
+import { getAllPolls } from './handlers/getAllPolls.js';
+import { getActivePoll } from './handlers/getActivePoll.js';
+import { getPoll } from './handlers/getPoll.js';
+import { getAllPollVotes } from './handlers/getAllPollVotes.js'; 
+import { vote } from './handlers/vote.js';
 const router = express.Router();
 
 //create a poll
-router.post('/', async (req, res) => {
-  try {
-    const { question, options } = req.body;
-    const poll = await Poll.create({ question, options});
-    res.status(201).json(poll);
-  } catch (error) {
-    res.status(500).json({ message: 'Error creating poll', error });
-  }
-});
+router.post('/', createPoll);
 
 //get all polls
-router.get('/', async (req, res) => {
-  try {
-    const polls = await Poll.findAll();
-    res.status(200).json(polls);
-  } catch (err) {
-    res.status(500).json({ message: 'Error fetching polls', err });
-  }
-});
+router.get('/', getAllPolls);
 
 //get one poll
-router.get('/:pollId', async (req, res) => {
-  try {
-    const { pollId } = req.params;
-    const poll = await Poll.findByPk(pollId, {
-      include: [{model: Votes, as: 'votes'}]
-    });
-
-    if (!poll) {
-      return res.status(404).json({ message: 'Poll not found'});
-    }
-
-    res.status(200).json(poll)
-  } catch (err) {
-    res.status(500).json({message: 'Error fetching poll', err});
-  }
-});
+router.get('/:pollId', getPoll);
 
 //get the active poll
-router.get('/active/poll', async (req, res) => {
-  try {
-    const activePoll = await Poll.findOne({
-      order: [['createdAt', 'DESC']],
-      include: [{model: Votes, as: 'votes'}]
-    });
-    if (!activePoll) {
-      return res.status(404).json({message: 'No polls found'});
-    }
-    
-    res.status(200).json(activePoll)
-  } catch (err) {
-    res.status(500).json({message: 'Error fetching the active poll', err});
-  }
-});
+router.get('/active/poll', getActivePoll);
 
 //get all votes for a poll
-router.get('/:pollId/votes', async (req, res) => {
-  try {
-    const { pollId } = req.params;
-    const poll = await Poll.findByPk(pollId, {
-      include: [{model: Votes, as: 'votes'}]
-    });
-    
-    if (!poll) {
-      return res.status(404).json({message: 'Poll not found'});
-    }
-    
-    res.status(200).json(poll.votes);
-  } catch (err) {
-    res.status(500).json({ message: 'Error fetching votes', err });
-  }
-});
+router.get('/:pollId/votes', getAllPollVotes);
 
 //vote on a poll
-router.post('/:pollId/vote', async (req, res) => {
-  try {
-    const { pollId } = req.params;
-    const { option } = req.body;
-    const poll = await Poll.findByPk(pollId);
-
-    if (!poll || !poll.options.includes(option)) {
-      return res.status(400).json({ message: 'Invalid poll or option', options: poll.options, option });
-    }
-    
-    const vote = await Votes.create({ pollId, option });
-    res.status(201).json(vote);
-  } catch (err) {
-    res.status(500).json({ message: 'Error voting', err });
-  }
-});
+router.post('/:pollId/vote', vote);
 
 export default router;

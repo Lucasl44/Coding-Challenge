@@ -5,7 +5,7 @@ export default function createPoll(sequelize, DataTypes) {
       allowNull: false
     },
     options: {
-      type: DataTypes.JSONB,
+      type: DataTypes.JSON,
       allowNull: false
     }
   });
