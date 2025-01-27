@@ -25,8 +25,10 @@ export const PollOptions = ({poll, setVoted, voted}) => {
         pollId: id,
         option: selectedOption
       })
-    });
+    }).then(() => {
       setVoted(true);
+      setSelectedOption('')
+    });
     } catch (err) {
       console.error('Failed to submit vote', err);
     }
